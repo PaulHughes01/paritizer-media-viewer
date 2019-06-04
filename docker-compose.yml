@@ -1,0 +1,11 @@
+##########
+# Example Docker-compose file for development of the MyBitcoinHex website.
+##########
+version: '2'
+services:
+    website:
+        image: nginx
+        ports:
+         - "8080:80" # Edit/Use the first number to access the website.
+        volumes:
+            - ./public:/usr/share/nginx/html

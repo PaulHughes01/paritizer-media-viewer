@@ -1,0 +1,25 @@
+<app>
+    <div class="main">
+        <header>
+            <nav is="nav" app={ props.app }></nav>
+        </header>
+        <main>
+            <div id="main-container" class="container">
+                <content app={ props.app }></content>
+            </div>
+        </main>
+        <footer>
+        </footer>
+    </div>
+    <script>
+        import Content from '../content/content.riot';
+        import Nav from '../nav/nav.riot';
+
+        export default {
+            components: {
+                Content,
+                Nav,
+            },
+        };
+    </script>
+</app>

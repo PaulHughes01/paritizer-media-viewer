@@ -1,0 +1,36 @@
+{
+  "name": "paritizer-media-viewer",
+  "version": "1.0.0",
+  "description": "Media Viewer for files served by the peritizer file-access service.",
+  "main": "public/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulHughes01/paritizer-media-viewer.git"
+  },
+  "author": "Paul Hughes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PaulHughes01/paritizer-media-viewer/issues"
+  },
+  "homepage": "https://github.com/PaulHughes01/paritizer-media-viewer#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@riotjs/compiler": "^4.2.4",
+    "@riotjs/webpack-loader": "^4.0.0",
+    "babel-loader": "^8.0.6",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "riot-compiler": "^3.6.0",
+    "riot-tag-loader": "^2.1.0"
+  },
+  "dependencies": {
+    "materialize-css": "^1.0.0",
+    "riot": "^4.0.4"
+  }
+}

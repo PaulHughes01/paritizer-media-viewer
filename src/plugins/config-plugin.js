@@ -15,17 +15,17 @@ const getConfig = (name) => {
 };
 
 /**
- * Helper
- * The helper component
+ * Plugin
+ * The plugin
  *
  * @param {object} component - The component
  * @return {object} component - The modified component
  */
-const helper = (component) => {
+const plugin = (component) => {
     theComponent = component;
     component.getConfig = getConfig;
 
     return component;
 };
 
-export default helper;
+export default plugin;

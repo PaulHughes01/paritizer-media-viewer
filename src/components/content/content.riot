@@ -1,0 +1,68 @@
+<content>
+    <p>{ getConfig('basicText') }</p>
+    <section>
+        <carousel app={ props.app } urls={ state.urls } duration={ state.duration }></carousel>
+    </section>
+    <section>
+        <settings app={ props.app }></settings>
+    </section>
+    <script>
+        import Carousel from '../carousel/carousel.riot';
+        import Settings from '../settings/settings.riot';
+        import nanoajax from 'nanoajax';
+
+        let app;
+
+        /**
+         * FetchUrlList
+         * Fetches a list of URLs for the configured disk
+         * @return {Promise}
+         */
+        const fetchUrlList = () => new Promise((resolve) => {
+            nanoajax.ajax({
+                url: 'https://picsum.photos/v2/list',
+            }, (code, body) => {
+                if (code >= 300) {
+                    return reject();
+                }
+
+                const urls = [];
+                const urlList = JSON.parse(body);
+                urlList.forEach((item) => {
+                    urls.push(`${item.download_url}.jpg`);
+                });
+
+                resolve(urls);
+            });
+        });
+
+        export default {
+            components: {
+                Carousel,
+                Settings,
+            },
+            onBeforeMount() {
+                app = this.props.app;
+                app.media = {
+                    urls: [],
+                    duration: this.getConfig('duration'),
+                };
+                this.state.urls = [
+                    'https://picsum.photos/id/1/200/300.jpg',
+                    'https://picsum.photos/id/2/200/300.jpg',
+                    'https://picsum.photos/id/3/200/300.jpg',
+                ];
+                this.state.duration = 3000;
+            },
+            onMounted() {
+                const self = this;
+                /*
+                fetchUrlList
+                    .then((urls) => {
+                        this.update({ urls });
+                    });
+                    */
+            },
+        };
+    </script>
+</content>

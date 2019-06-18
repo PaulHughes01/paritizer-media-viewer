@@ -1,7 +1,7 @@
 // NPM Dependencies
 import { component, install } from 'riot';
-import App from '../modules/app/app.riot';
-import configHelper from '../helpers/config-helper.js';
+import App from '../components/app/app.riot';
+import configHelper from '../plugins/config-plugin.js';
 
 // Initialize
 ((window, data) => {

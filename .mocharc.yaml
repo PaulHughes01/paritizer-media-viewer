@@ -1,0 +1,5 @@
+file:
+    - test/mocha/init-env.js
+    - test/mocha/riot-compiler.js
+    - test/mocha/spec-helper.js
+require: 'esm'

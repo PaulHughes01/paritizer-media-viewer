@@ -28,7 +28,7 @@ task('config', () => {
 task('css', () => {
     return src([
         'src/sass/app.scss',
-        'src/components/**/*.tag.scss',
+        'src/components/**/*.scss',
         ])
         .pipe(sass({
             outputStyle: 'expanded',

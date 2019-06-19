@@ -1,10 +1,13 @@
 <carousel>
     <div class="row">
         <div class="col m8 s12 offset-m2 center-align">
-            <media-view image-url={ state.imageUrlSuffixed } />
-        </div>
-            <div class="center-align">
-                <p>{ state.imageUrl }</p>
+            <div class="card">
+                <div class="card-content">
+                    <p>{ state.imageUrl }</p>
+                </div>
+                <div class="card-image">
+                    <media-view image-url={ state.imageUrlSuffixed } />
+                </div>
             </div>
         </div>
     </div>
@@ -15,13 +18,19 @@
             components: {
                 MediaView,
             },
-            onBeforeMount() {
-            },
             onMounted() {
                 this.interval = false;
                 this.updateImage(this.props.urls[0]);
                 this.cycleImages(this.props.urls, this.props.duration, 1);
             },
+            /**
+             * CycleImages
+             * Cycles through a set of image URLS
+             *
+             * @param {Array} urls - The image URLs
+             * @param {int} duration - The duration an image should be displayed for in milliseconds
+             * @param {int} startIndex - The index to start the cycle on
+             */
             cycleImages(urls, duration, startIndex) {
                 if (this.interval) {
                     clearInterval(this.interval);
@@ -37,6 +46,12 @@
                     }
                 }, duration);
             },
+            /**
+             * UpdateImage
+             * Update the rendered image
+             *
+             * @param {string} imageUrl - The image URL to load
+             */
             updateImage(imageUrl) {
                 const imageUrlSuffixed = `${imageUrl}?d=${Date.now()}`;
 

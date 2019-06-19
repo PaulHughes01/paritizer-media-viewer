@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { component } from 'riot';
 
-const MediaView = require('./media-view.riot').default;
+const MediaView = require('./media-view.riot');
 
 const tagName = 'media-view';
 const mountTag = component(MediaView);

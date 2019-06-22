@@ -1,2 +1,146 @@
 <settings>
+    <div class="row">
+        <div class="col m8 s12 offset-m2 center-align">
+            <div class="row">
+                <form onsubmit={ connectToHost }>
+                    <div class="col m7 s12">
+                        <input-url id="server-input" placeholder="http://localhost:8060" validate="validate" label="File Accessor Server URL" value={ state.host } input={ hostInput } />
+                    </div>
+                    <div class="col m5 s12">
+                        <button class="btn" type="submit"><i class="material-icons left">refresh</i>Connect</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col m12">
+                    <input-select disabled={ state.selectOptions.length === 0 } options={ state.selectOptions } placeholder={ selectPlaceholder } change={ diskSelect } label="Disk Select" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        import InputUrl from '../forms/input-url/input-url.riot';
+        import InputSelect from '../forms/input-select/input-select.riot';
+        import nanoajax from 'nanoajax';
+
+        /**
+         * The API base path
+         */
+        const apiPath ='FileAccessService/api/fileAccessor';
+
+        /**
+         * FetchDiskList
+         * Fetches a disk list from a provided File Access Service host
+         *
+         * @param {string} host - The host serving the File Access Service
+         * @param {function} callback - The callback function (err, data)
+         */
+        const fetchDiskList = (host, callback) => {
+            const url = `${host}/${apiPath}/diskList`;
+            nanoajax.ajax({ url }, (code, body) => {
+                if (code >= 400 || code < 200) {
+                    callback(new Error('Error fetching disk list', code));
+                }
+
+                const { disks } = JSON.parse(body);
+
+                callback(null, disks);
+            });
+        };
+
+        /**
+         * FetchDiskList
+         * Fetches a disk list from a provided File Access Service host
+         *
+         * @param {string} host - The host serving the File Access Service
+         * @param {string} diskName - The disk name to fetch files for
+         * @param {function} callback - The callback function (err, data)
+         */
+        const fetchUrlList = (host, diskName, callback) => {
+            const url = `${host}/${apiPath}/fileList/${diskName}`;
+            nanoajax.ajax({ url }, (code, body) => {
+                if (code >= 400 || code < 200) {
+                    callback(new Error('Error fetching file list', code));
+                }
+
+                const { urls } = JSON.parse(body);
+
+                // Make sure we only count JPGs
+                const urlList = urls.filter(url => url.endsWith('.jpg'));
+
+                callback(null, urlList);
+            });
+        };
+
+        export default {
+            components: {
+                InputUrl,
+                InputSelect,
+            },
+            state: {
+                host: '',
+                diskName: '',
+                selectOptions: [
+                    {
+                        label: 'Option 1',
+                        value: 1,
+                    },
+                    {
+                        label: 'Option 2',
+                        value: 2,
+                    }
+                ],
+            },
+            selectPlaceholder: 'Choose a disk',
+            hostInput(e) {
+                e.preventDefault();
+                this.update({ host: e.target.value });
+            },
+            diskSelect(e) {
+                const diskName = e.target.value;
+                this.update({ diskName });
+
+                fetchUrlList(this.state.host, diskName, (err, data) => {
+                    console.log('Error', err);
+                    console.log('Data', data);
+                    if (err) {
+                        return this.update({ error: err.message });
+                    }
+                    if (data.length === 0) {
+                        return this.update({ error: 'File list has no compatible images.' });
+                    }
+
+                    return this.props.setUrlList(data);
+                });
+            },
+            connectToHost(e) {
+                e.preventDefault();
+
+                fetchDiskList(this.state.host, (err, data) => {
+                    console.log('Error', err);
+                    console.log('Data', data);
+                    if (err) {
+                        return this.update({ error: err.message });
+                    }
+                    if (data.length === 0) {
+                        return this.update({ error: 'File list has no compatible images.' });
+                    }
+
+                    const selectOptions = [];
+                    data.forEach((diskName) => {
+                        selectOptions.push({
+                            label: diskName,
+                            value: diskName,
+                        });
+                    });
+
+                    console.log(selectOptions);
+                    console.log(this);
+
+                    return this.update({ selectOptions });
+                });
+            },
+        };
+
+    </script>
 </settings>

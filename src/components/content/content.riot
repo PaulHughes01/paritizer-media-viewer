@@ -1,16 +1,15 @@
 <content>
-    <p>{ getConfig('basicText') }</p>
     <section>
-        <carousel app={ props.app } urls={ state.urls } duration={ state.duration }></carousel>
+        <carousel urls={ state.urls } duration={ state.duration } mode={ state.mode } toggle-playback={ togglePlayback }></carousel>
     </section>
     <section>
-        <settings app={ props.app }></settings>
+        <settings set-url-list={ setUrlList }></settings>
     </section>
     <script>
         import Carousel from '../carousel/carousel.riot';
         import Settings from '../settings/settings.riot';
+        import IconButton from '../components/icon-button/icon-button.riot';
         import nanoajax from 'nanoajax';
-
         let app;
 
         /**
@@ -40,19 +39,22 @@
             components: {
                 Carousel,
                 Settings,
+                IconButton,
             },
             onBeforeMount() {
                 app = this.props.app;
                 app.media = {
                     urls: [],
-                    duration: this.getConfig('duration'),
+                    duration: 3000,
                 };
+
                 this.state.urls = [
                     'https://picsum.photos/id/1/300/200.jpg',
                     'https://picsum.photos/id/2/300/200.jpg',
                     'https://picsum.photos/id/3/300/200.jpg',
                 ];
                 this.state.duration = 3000;
+                this.state.mode = 'play';
             },
             onMounted() {
                 const self = this;
@@ -62,6 +64,33 @@
                         this.update({ urls });
                     });
                     */
+            },
+            setUrlList(urlList) {
+                this.update({ urls: urlList });
+            },
+            togglePlayback(e) {
+                e.preventDefault();
+                switch (this.state.mode) {
+                    case 'play':
+                        this.update({ mode: 'pause' });
+                        break;
+                    case 'pause':
+                        this.update({ mode: 'play' });
+                        break;
+                    default:
+                        // Do nothing, for example if stopped
+                        break;
+                }
+            },
+            triggerPause(e) {
+                e.preventDefault();
+                console.log(e);
+                console.log(this);
+                this.update({ mode: 'pause' });
+            },
+            triggerPlay(e) {
+                e.preventDefault();
+                this.update({ mode: 'play' });
             },
         };
     </script>

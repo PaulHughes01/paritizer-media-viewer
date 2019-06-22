@@ -1,0 +1,7 @@
+<input-field name={ null } id={ null } label={ null }>
+    <div class="input-field">
+        <slot />
+        <label for={ props.id }>{ props.label }</label>
+        <span class="helper-text" data-error={ props.errorHelper } data-success={ props.successHelper }>{ props.helperText }</span>
+    </div>
+</input-field>

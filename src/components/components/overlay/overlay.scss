@@ -1,0 +1,22 @@
+// Color variables
+@import "components/color-variables";
+
+overlay, [is="overlay"] {
+    > div {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(color('blue-grey', 'darken-2'), .7);
+
+        i.material-icons {
+            font-size: 8rem;
+            color: color('grey', 'lighten-5');
+        }
+    }
+
+    div.icon-wrapper {
+        width: 100%;
+    }
+}

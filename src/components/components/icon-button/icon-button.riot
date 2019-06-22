@@ -1,0 +1,22 @@
+<icon-button>
+    <a onclick={ props.click } class={ getClasses() }><i if={ props.icon } class="material-icons left">{ props.icon }</i>{ props.label }</a>
+    <script>
+        export default {
+            getClasses() {
+                const classes = [
+                    'btn'
+                ];
+
+                if (this.props.color) {
+                    classes.push(this.props.color);
+                }
+
+                if (this.props.hue) {
+                    classes.push(this.props.hue);
+                }
+
+                return classes.join(' ');
+            },
+        };
+    </script>
+</icon-button>

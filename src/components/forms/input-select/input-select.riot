@@ -1,0 +1,29 @@
+<input-select name={ null } id={ null } label={ null }>
+    <input-field
+        id={ props.id }
+        name={ props.name }
+        label={ props.label }
+    >
+        <select multiple={ props.multiple } disabled={ props.disabled } onchange={ props.change  }>
+            <option if={ props.placeholder } value="" disabled selected={ !props.selected }>{ props.placeholder }</option>
+            <option each={ option in props.options } value={ option.value }>{ option.label }</option>
+        </select>
+    </input-field>
+    <script>
+        import InputField from '../input-field/input-field.riot';
+
+        export default {
+            components: {
+                InputField,
+            },
+            onMounted() {
+                const selectEl = this.$('select');
+                this.M.FormSelect.init(selectEl);
+            },
+            onUpdated() {
+                const selectEl = this.$('select');
+                this.M.FormSelect.init(selectEl);
+            },
+        };
+    </script>
+</input-select>

@@ -1,7 +1,8 @@
 // NPM Dependencies
 import { component, install } from 'riot';
 import App from '../components/app/app.riot';
-import configHelper from '../plugins/config-plugin.js';
+import configPlugin from '../plugins/config-plugin.js';
+import materializePlugin from '../plugins/materialize-plugin.js';
 
 // Initialize
 ((window, data) => {
@@ -10,7 +11,8 @@ import configHelper from '../plugins/config-plugin.js';
     };
 
     // Install helpers
-    install(configHelper);
+    install(configPlugin);
+    install(materializePlugin);
 
     // Register the app component.
     const mountApp = component(App);

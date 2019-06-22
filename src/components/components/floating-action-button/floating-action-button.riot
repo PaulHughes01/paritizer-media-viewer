@@ -1,0 +1,59 @@
+<floating-action-button>
+    <div class={ getDivClasses() } style={ getFloatingStyle() }>
+        <a class={ getAClasses() } onclick={ props.click }>
+            <i class={ getIClasses() }>{ props.icon }</i>
+        </a>
+    </div>
+    <script>
+        export default {
+            getDivClasses() {
+                const classes = [
+                    'fixed-action-btn',
+                ];
+
+                if (this.props.position === 'relative') {
+                    classes.push('absolute');
+                }
+
+                if (this.props.location) {
+                    classes.push(this.props.location);
+                }
+
+                return classes.join(' ');
+            },
+            getAClasses() {
+                const size = this.props.size ? this.props.size : 'large';
+                const classes = [
+                    'btn-floating',
+                    `btn-${size}`,
+                ];
+
+                if (this.props.color) {
+                    classes.push(color);
+                }
+
+                return classes.join(' ');
+            },
+            getIClasses() {
+                const size  = this.props.size ? this.props.size : 'large';
+                const classes = [
+                    'material-icons',
+                    size,
+                ];
+
+                return classes.join(' ');
+            },
+            getFloatingStyle() {
+                const positions = ['top', 'bottom', 'right', 'left'];
+                let style = '';
+                positions.forEach((position) => {
+                    if (typeof this.props[position] !== 'undefined') {
+                        style = `${style} ${position}: ${this.props[position]};`;
+                    }
+                });
+
+                return style;
+            },
+        };
+    </script>
+</floating-action-button>

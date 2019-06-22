@@ -1,0 +1,40 @@
+<input-url name={ null } id={ null } label={ null }>
+    <input-field
+        id={ props.id }
+        name={ props.name }
+        label={ props.label }
+        helper-text={ props.helperText }
+        error-helper={ props.errorHelper }
+        success-helper={ props.successHelper }
+    >
+        <input id={ props.id }
+            oninput={ props.input }
+            disabled={ props.disabled }
+            type="url"
+            placeholder={ props.placeholder }
+            label={ props.label }
+            name={ props.name }
+            validate={ props.validate }
+            class={ getCssClass() }
+            required={ props.required }
+            pattern="https?://.+"
+            value={ props.value || '' }
+        />
+    </input-field>
+    <script>
+        import InputField from '../input-field/input-field.riot';
+
+        export default {
+            components: {
+                InputField,
+            },
+            getCssClass() {
+                if (this.props.validate) {
+                    return 'validate';
+                }
+
+                return '';
+            },
+        };
+    </script>
+</input-url>

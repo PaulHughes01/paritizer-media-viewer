@@ -1,6 +1,25 @@
+// Color variables
+@import "components/color-variables";
+
 carousel {
     media-view {
         min-width: 300px;
         min-height: 300px;
+    }
+
+    .card-wrapper {
+        position: relative;
+
+        floating-action-button {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    .card-content p {
+        direction: rtl;
     }
 }

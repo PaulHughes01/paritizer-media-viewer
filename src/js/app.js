@@ -11,7 +11,6 @@ import materializePlugin from '../plugins/materialize-plugin.js';
     };
 
     // Install helpers
-    install(configPlugin);
     install(materializePlugin);
 
     // Register the app component.

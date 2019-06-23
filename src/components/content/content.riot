@@ -1,39 +1,15 @@
 <content>
     <section>
-        <carousel urls={ state.urls } duration={ state.duration } mode={ state.mode } toggle-playback={ togglePlayback }></carousel>
+        <carousel urls={ state.urls } duration={ state.duration } mode={ state.mode } toggle-playback={ togglePlayback } set-error={ setError } error={ state.error } set-server-stop={ setServerStop } set-server-resume={ setServerResume }></carousel>
     </section>
     <section>
-        <settings set-url-list={ setUrlList }></settings>
+        <settings set-url-list={ setUrlList } set-error={ setError } options={ props.options }></settings>
     </section>
     <script>
         import Carousel from '../carousel/carousel.riot';
         import Settings from '../settings/settings.riot';
         import IconButton from '../components/icon-button/icon-button.riot';
         import nanoajax from 'nanoajax';
-        let app;
-
-        /**
-         * FetchUrlList
-         * Fetches a list of URLs for the configured disk
-         * @return {Promise}
-         */
-        const fetchUrlList = () => new Promise((resolve) => {
-            nanoajax.ajax({
-                url: 'https://picsum.photos/v2/list',
-            }, (code, body) => {
-                if (code >= 300) {
-                    return reject();
-                }
-
-                const urls = [];
-                const urlList = JSON.parse(body);
-                urlList.forEach((item) => {
-                    urls.push(`${item.download_url}.jpg`);
-                });
-
-                resolve(urls);
-            });
-        });
 
         export default {
             components: {
@@ -42,31 +18,41 @@
                 IconButton,
             },
             onBeforeMount() {
-                app = this.props.app;
-                app.media = {
-                    urls: [],
-                    duration: 3000,
-                };
-
-                this.state.urls = [
-                    'https://picsum.photos/id/1/300/200.jpg',
-                    'https://picsum.photos/id/2/300/200.jpg',
-                    'https://picsum.photos/id/3/300/200.jpg',
-                ];
+                this.state.urls = [];
                 this.state.duration = 3000;
                 this.state.mode = 'play';
             },
             onMounted() {
-                const self = this;
-                /*
-                fetchUrlList
-                    .then((urls) => {
-                        this.update({ urls });
-                    });
-                    */
+                if (this.props.options.slideDuration) {
+                    this.update({ duration: this.props.options.slideDuration });
+                }
+            },
+            errorHandler(e) {
+            },
+            setError(error) {
+                this.update({
+                    error,
+                    mode: 'error',
+                });
             },
             setUrlList(urlList) {
-                this.update({ urls: urlList });
+                this.update({
+                    mode: 'play',
+                    error: '',
+                    urls: urlList
+                });
+            },
+            setServerStop() {
+                this.update({
+                    mode: 'stop',
+                    error: '',
+                });
+            },
+            setServerResume() {
+                this.update({
+                    mode: 'play',
+                    error: '',
+                });
             },
             togglePlayback(e) {
                 e.preventDefault();
@@ -75,22 +61,16 @@
                         this.update({ mode: 'pause' });
                         break;
                     case 'pause':
-                        this.update({ mode: 'play' });
+                    case 'error':
+                        this.update({
+                            mode: 'play',
+                            error: '',
+                        });
                         break;
                     default:
                         // Do nothing, for example if stopped
                         break;
                 }
-            },
-            triggerPause(e) {
-                e.preventDefault();
-                console.log(e);
-                console.log(this);
-                this.update({ mode: 'pause' });
-            },
-            triggerPlay(e) {
-                e.preventDefault();
-                this.update({ mode: 'play' });
             },
         };
     </script>

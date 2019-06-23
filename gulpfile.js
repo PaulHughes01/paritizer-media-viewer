@@ -3,6 +3,8 @@ const { dest, src, task, parallel, series, watch } = require('gulp');
 const concat = require('gulp-concat');
 const cssnano = require('cssnano');
 const fs = require('fs');
+const inline = require('gulp-inline');
+const multiDest = require('gulp-multi-dest');
 const postcss = require('gulp-postcss');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass');
@@ -10,6 +12,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const webpackStream = require('webpack-stream');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 task('config', () => {
     const defaultFile = 'config.example.js';
@@ -22,7 +25,7 @@ task('config', () => {
 
     return src(useFile)
         .pipe(rename('config.js'))
-        .pipe(dest('public/js/'));
+        .pipe(multiDest(['public/', 'dist/']));
 });
 
 task('css', () => {
@@ -78,12 +81,27 @@ task('js', () => {
                     template: 'src/index.html',
                     filename: '../index.html',
                 }),
+                new HtmlWebpackPlugin({
+                    template: 'src/index.html',
+                    filename: '../index-standalone.html',
+                    inlineSource: '.(js|css)$',
+                }),
+                new HtmlWebpackInlineSourcePlugin(),
             ],
         }))
         .pipe(dest('public/js/'));
 });
 
-task('dev', series( 'css', 'js', 'config'));
+task('dist', () => {
+    return src('public/index-standalone.html')
+        .pipe(inline({
+            ignore: ['config.js'],
+        }))
+        .pipe(rename('index.html'))
+        .pipe(dest('dist/'));
+});
+
+task('dev', series( 'css', 'config', 'js', 'dist'));
 
 task('watch', () => {
     watch(['src/**', 'config.*'], gulp.series('dev'));

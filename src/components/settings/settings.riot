@@ -80,18 +80,15 @@
             state: {
                 host: '',
                 diskName: '',
-                selectOptions: [
-                    {
-                        label: 'Option 1',
-                        value: 1,
-                    },
-                    {
-                        label: 'Option 2',
-                        value: 2,
-                    }
-                ],
+                selectOptions: [],
             },
             selectPlaceholder: 'Choose a disk',
+            onMounted() {
+                if (this.props.options.defaultHost) {
+                    this.update({ host: this.props.options.defaultHost });
+                    this.connectToHost({ preventDefault: () => {} });
+                }
+            },
             hostInput(e) {
                 e.preventDefault();
                 this.update({ host: e.target.value });
@@ -101,8 +98,6 @@
                 this.update({ diskName });
 
                 fetchUrlList(this.state.host, diskName, (err, data) => {
-                    console.log('Error', err);
-                    console.log('Data', data);
                     if (err) {
                         return this.update({ error: err.message });
                     }
@@ -117,8 +112,6 @@
                 e.preventDefault();
 
                 fetchDiskList(this.state.host, (err, data) => {
-                    console.log('Error', err);
-                    console.log('Data', data);
                     if (err) {
                         return this.update({ error: err.message });
                     }
@@ -133,9 +126,6 @@
                             value: diskName,
                         });
                     });
-
-                    console.log(selectOptions);
-                    console.log(this);
 
                     return this.update({ selectOptions });
                 });

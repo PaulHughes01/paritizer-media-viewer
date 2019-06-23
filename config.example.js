@@ -1,6 +1,7 @@
 var appData = {
     options: {
-        basicText: 'Hello there!',
+        defaultHost: 'http://localhost:8060',
+        slideDuration: 5000, // 1 Second (1000 milliseconds)
     },
 };
 

@@ -14,6 +14,13 @@
                 this.imgEl.onload = () => {
                     this.imageLoaded = true;
                     this.update();
+                    this.props.loaded();
+                };
+                this.imgEl.onerror = (e) => {
+                    e.preventDefault();
+                    this.imageLoaded = false;
+                    this.update();
+                    this.props.errorLoading(e);
                 };
             },
             onBeforeUpdate(props, state) {

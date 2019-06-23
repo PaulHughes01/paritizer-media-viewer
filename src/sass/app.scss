@@ -38,3 +38,9 @@
 @import "components/pulse";
 // @import "components/datepicker";
 // @import "components/timepicker";
+
+.wf-loading, .wf-inactive {
+    i.material-icons {
+        display: none;
+    }
+}

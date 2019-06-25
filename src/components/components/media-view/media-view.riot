@@ -1,6 +1,6 @@
 <media-view>
-    <spinner if={ !imageLoaded }></spinner>
-    <img src={ props.imageUrl } class={ getClasses() }>
+    <spinner if={ state.spinner }></spinner>
+    <img src={ props.imageUrl } class={ state.cssClass }>
     <script>
         import Spinner from '../spinner/spinner.riot';
 
@@ -8,31 +8,29 @@
             components: {
                 Spinner,
             },
+            state: {
+                spinner: true,
+            },
             onMounted() {
                 this.imageLoaded = false;
                 this.imgEl = this.$('img');
                 this.imgEl.onload = () => {
                     this.imageLoaded = true;
-                    this.update();
+                    this.update({ cssClass: '', spinner: false });
                     this.props.loaded();
                 };
                 this.imgEl.onerror = (e) => {
                     e.preventDefault();
                     this.imageLoaded = false;
-                    this.update();
+                    this.update({ cssClass: 'hidden', spinner: false });
                     this.props.errorLoading(e);
                 };
             },
             onBeforeUpdate(props, state) {
                 if (this.imgEl.src !== props.imageUrl) {
                     this.imageLoaded = false;
-                }
-            },
-            getClasses() {
-                if (this.imageLoaded) {
-                    return '';
-                } else {
-                    return 'hidden';
+                    this.state.cssClass = 'hidden';
+                    this.state.spinner = true;
                 }
             },
         };

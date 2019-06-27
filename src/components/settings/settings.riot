@@ -104,6 +104,7 @@
                     if (data.length === 0) {
                         return this.update({ error: 'File list has no compatible images.' });
                     }
+                    console.log('Url List', data);
 
                     return this.props.setUrlList(data);
                 });
